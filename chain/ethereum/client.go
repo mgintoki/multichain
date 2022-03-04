@@ -73,7 +73,7 @@ func (c *Client) GetAccount() string {
 	if c.private == nil {
 		return ""
 	}
-	return strings.ToLower(crypto.PubkeyToAddress(c.private.PublicKey).String())
+	return crypto.PubkeyToAddress(c.private.PublicKey).String()
 }
 
 func (c *Client) GetChainID() (string, error) {
@@ -117,7 +117,7 @@ func (c *Client) QueryTx(txHash string, isWait bool) (txData *tx.TxData, err err
 	defer ticker.Stop()
 
 	txData = &tx.TxData{
-		TxHash: strings.ToLower(txHash),
+		TxHash: txHash,
 	}
 	isPending := false
 
@@ -137,7 +137,7 @@ func (c *Client) QueryTx(txHash string, isWait bool) (txData *tx.TxData, err err
 		}
 		if receipt != nil {
 			isPending = false
-			txData.ContractAddress = strings.ToLower(receipt.ContractAddress.String())
+			txData.ContractAddress = receipt.ContractAddress.String()
 			txData.GasUsed = receipt.GasUsed
 		} else {
 			isPending = true
@@ -172,9 +172,9 @@ func (c *Client) QueryTx(txHash string, isWait bool) (txData *tx.TxData, err err
 
 func convertTxInfo(txData *tx.TxData, web3Tx web3.Transaction) {
 
-	txData.From = strings.ToLower(web3Tx.From.String())
+	txData.From = web3Tx.From.String()
 	if web3Tx.To != nil {
-		txData.To = strings.ToLower(web3Tx.To.String())
+		txData.To = web3Tx.To.String()
 	}
 
 	txData.Data = web3Tx.Input
@@ -260,7 +260,7 @@ func (c *Client) SendSignedTx(signedTx tx.Tx) (txHash string, err error) {
 	if err != nil {
 		return "", err
 	} else {
-		return strings.ToLower(web3Hash.String()), nil
+		return web3Hash.String(), nil
 	}
 
 }
