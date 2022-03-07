@@ -1,4 +1,4 @@
-module multichain
+module github.com/mgintoki/multichain
 
 go 1.16
 
