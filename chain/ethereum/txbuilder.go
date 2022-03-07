@@ -7,10 +7,10 @@ import (
 	"github.com/mgintoki/go-web3"
 	"github.com/mgintoki/go-web3/abi"
 	"github.com/mgintoki/go-web3/jsonrpc"
-	"multichain/api/provider"
-	"multichain/api/tx"
-	"multichain/api/txbuilder"
-	"multichain/errno"
+	"github.com/mgintoki/multichain/api/provider"
+	"github.com/mgintoki/multichain/api/tx"
+	"github.com/mgintoki/multichain/api/txbuilder"
+	"github.com/mgintoki/multichain/errno"
 	"strings"
 )
 

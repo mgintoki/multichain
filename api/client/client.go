@@ -1,10 +1,10 @@
 package client
 
 import (
+	"github.com/mgintoki/multichain/api/fee"
+	"github.com/mgintoki/multichain/api/provider"
+	"github.com/mgintoki/multichain/api/tx"
 	"math/big"
-	"multichain/api/fee"
-	"multichain/api/provider"
-	"multichain/api/tx"
 )
 
 // CallContractParam 是查询合约的参数

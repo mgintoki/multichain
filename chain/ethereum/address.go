@@ -2,7 +2,7 @@ package ethereum
 
 import (
 	"github.com/mgintoki/go-web3"
-	"multichain/api/address"
+	"github.com/mgintoki/multichain/api/address"
 )
 
 type AddressEncoder struct {

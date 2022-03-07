@@ -1,8 +1,8 @@
 package txbuilder
 
 import (
+	"github.com/mgintoki/multichain/api/tx"
 	"math/big"
-	"multichain/api/tx"
 )
 
 // BuildTxParam 是构造一个交易的参数

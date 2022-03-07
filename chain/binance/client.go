@@ -1,8 +1,8 @@
 package binance
 
 import (
-	"multichain/api/provider"
-	"multichain/chain/ethereum"
+	"github.com/mgintoki/multichain/api/provider"
+	"github.com/mgintoki/multichain/chain/ethereum"
 )
 
 type Client = ethereum.Client

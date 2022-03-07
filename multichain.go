@@ -2,14 +2,14 @@ package multichain
 
 import (
 	"fmt"
-	"multichain/api/address"
-	"multichain/api/client"
-	"multichain/api/provider"
-	"multichain/api/txbuilder"
-	"multichain/chain/binance"
-	"multichain/chain/ethereum"
-	"multichain/chain/okex"
-	"multichain/errno"
+	"github.com/mgintoki/multichain/api/address"
+	"github.com/mgintoki/multichain/api/client"
+	"github.com/mgintoki/multichain/api/provider"
+	"github.com/mgintoki/multichain/api/txbuilder"
+	"github.com/mgintoki/multichain/chain/binance"
+	"github.com/mgintoki/multichain/chain/ethereum"
+	"github.com/mgintoki/multichain/chain/okex"
+	"github.com/mgintoki/multichain/errno"
 )
 
 const (

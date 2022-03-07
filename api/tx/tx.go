@@ -1,8 +1,8 @@
 package tx
 
 import (
+	"github.com/mgintoki/multichain/api/fee"
 	"math/big"
-	"multichain/api/fee"
 )
 
 // Tx 是链SDK中的一个交易

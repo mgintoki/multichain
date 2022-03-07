@@ -1,5 +1,5 @@
 package binance
 
-import "multichain/chain/ethereum"
+import "github.com/mgintoki/multichain/chain/ethereum"
 
 type Txn = ethereum.Txn
