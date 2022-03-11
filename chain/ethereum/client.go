@@ -111,6 +111,10 @@ func (c *Client) Transfer(to string, amount *big.Int, optionAsset *client.Option
 
 func (c *Client) QueryTx(txHash string, isWait bool) (txData *tx.TxData, err error) {
 
+	if txHash == "0x0000000000000000000000000000000000000000000000000000000000000000" || txHash == "" {
+		return nil, fmt.Errorf("invalid tx hash:[%v]", txHash)
+	}
+
 	web3Hash := web3.HexToHash(txHash)
 
 	ticker := time.NewTicker(time.Second * 3)
