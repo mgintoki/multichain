@@ -13,6 +13,7 @@ import (
 	"github.com/mgintoki/multichain/api/provider"
 	"github.com/mgintoki/multichain/api/tx"
 	"github.com/mgintoki/multichain/api/txbuilder"
+	"github.com/mgintoki/multichain/common"
 	"github.com/mgintoki/multichain/errno"
 	"github.com/mgintoki/multichain/tools"
 	"math/big"
@@ -122,33 +123,32 @@ func (c *Client) QueryTx(txHash string, isWait bool) (txData *tx.TxData, err err
 
 	txData = &tx.TxData{
 		TxHash: txHash,
+		Status: common.TxStatusPending,
 	}
-	isPending := false
-
 	for {
 		receipt, err := c.provider.Eth().GetTransactionReceipt(web3Hash)
 		if err != nil {
 			if err.Error() == "not found" {
-				isPending = true
+
 			} else {
+				//todo 以太坊不同版本返回的txIndex分别是uint64和string,临时这样处理错误，后面改以太坊环境测试
 				if err.Error() == "field 'removed' not found" && receipt.BlockNumber != 0 && receipt.TransactionIndex == 0 {
-					isPending = false
-					//todo 以太坊不同版本返回的txIndex分别是uint64和string,临时这样处理错误，后面改以太坊环境测试
+					txData.Status = common.TxStatusSuccess
 				} else {
 					return nil, err
 				}
 			}
 		}
 		if receipt != nil {
-			isPending = false
+			txData.Status = common.TxStatusSuccess
 			txData.ContractAddress = receipt.ContractAddress.String()
 			txData.GasUsed = receipt.GasUsed
 		} else {
-			isPending = true
+			txData.Status = common.TxStatusPending
 		}
 
 		if !isWait {
-			if isPending {
+			if txData.Status == common.TxStatusPending {
 				return txData, nil
 			} else {
 				web3Tx, err := c.provider.Eth().GetTransactionByHash(web3Hash)
@@ -160,7 +160,7 @@ func (c *Client) QueryTx(txHash string, isWait bool) (txData *tx.TxData, err err
 			}
 		}
 
-		if !isPending {
+		if txData.Status != common.TxStatusPending {
 			web3Tx, err := c.provider.Eth().GetTransactionByHash(web3Hash)
 			if err != nil {
 				return nil, err

@@ -56,6 +56,7 @@ type Tx interface {
 
 // TxData 是交易详情
 type TxData struct {
+	Status          uint8    `json:"status"`
 	TxHash          string   `json:"txHash"`
 	ContractAddress string   `json:"contractAddress"` //  部署合约交易返回的交易地址
 	TxType          string   `json:"txType"`
