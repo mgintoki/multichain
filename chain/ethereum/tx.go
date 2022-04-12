@@ -187,8 +187,11 @@ func (t *Txn) InjectSignature(hexSignature string, chainID string) (err error) {
 
 	vv := uint64(sig[64]) + 35 + chainIDBig.Uint64()*2
 
-	web3Tx.R = sig[:32]
-	web3Tx.S = sig[32:64]
+	web3Tx.R, web3Tx.S, err = trimLeadingZero(sig[:32], sig[32:64])
+	if err != nil {
+		return err
+	}
+
 	web3Tx.V = new(big.Int).SetUint64(vv).Bytes()
 
 	t.SignedTx = web3Tx.MarshalRLP()
