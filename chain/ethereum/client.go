@@ -16,6 +16,8 @@ import (
 	"github.com/mgintoki/multichain/common"
 	"github.com/mgintoki/multichain/errno"
 	"github.com/mgintoki/multichain/tools"
+	"github.com/umbracle/ethgo"
+	ej "github.com/umbracle/ethgo/jsonrpc"
 	"math/big"
 	"strings"
 	"time"
@@ -116,9 +118,14 @@ func (c *Client) QueryTx(txHash string, isWait bool) (txData *tx.TxData, err err
 		return nil, fmt.Errorf("invalid tx hash:[%v]", txHash)
 	}
 
+	ethGoCli, err := ej.NewClient(c.nodeUrl)
+	if err != nil {
+		return nil, err
+	}
+	ethGoHash := ethgo.HexToHash(txHash)
 	web3Hash := web3.HexToHash(txHash)
 
-	ticker := time.NewTicker(time.Second * 3)
+	ticker := time.NewTicker(time.Second * 5)
 	defer ticker.Stop()
 
 	txData = &tx.TxData{
@@ -126,7 +133,7 @@ func (c *Client) QueryTx(txHash string, isWait bool) (txData *tx.TxData, err err
 		Status: common.TxStatusPending,
 	}
 	for {
-		receipt, err := c.provider.Eth().GetTransactionReceipt(web3Hash)
+		receipt, err := ethGoCli.Eth().GetTransactionReceipt(ethGoHash)
 		if err != nil {
 			if err.Error() == "not found" {
 
@@ -140,7 +147,11 @@ func (c *Client) QueryTx(txHash string, isWait bool) (txData *tx.TxData, err err
 			}
 		}
 		if receipt != nil {
-			txData.Status = common.TxStatusSuccess
+			if receipt.Status == 1 {
+				txData.Status = common.TxStatusSuccess
+			} else {
+				txData.Status = common.TxStatusFailed
+			}
 			txData.ContractAddress = receipt.ContractAddress.String()
 			txData.GasUsed = receipt.GasUsed
 		} else {
